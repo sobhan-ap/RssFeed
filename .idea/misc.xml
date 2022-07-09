@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/layout/fragment_bitcoin_news.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.16" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation_view.xml" value="0.21302083333333333" />
       </map>
     </option>
