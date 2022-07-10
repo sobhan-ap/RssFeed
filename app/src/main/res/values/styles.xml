@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextView">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textColorLink">?colorPrimary</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+
+    <style name="TextView.Normal">
+        <item name="fontFamily">@font/sourcesanspro_bold</item>
+    </style>
+
+    <style name="TextView.Thin">
+        <item name="fontFamily">sans-serif</item>
+    </style>
+
+
+    <style name="TextView.Normal.Size16">
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+    <style name="TextView.Normal.Size14">
+        <item name="android:textSize">@dimen/text_size_14</item>
+    </style>
+
+    <style name="TextView.Thin.Size12">
+        <item name="android:textSize">@dimen/text_size_12</item>
+    </style>
+
+    <style name="TextView.Thin.Size10">
+        <item name="android:textSize">@dimen/text_size_10</item>
+    </style>
+
+    <style name="TextView.Thin.Size8">
+        <item name="android:textSize">@dimen/text_size_8</item>
+    </style>
+
+    <style name="TextView.Normal.Size14.Title">
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <style name="TextView.Thin.Size12.Description">
+        <item name="android:textColor">@color/text_color_alt</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">3</item>
+    </style>
+
+    <style name="TextView.Thin.Size12.Source">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextView.Thin.Size8.Time">
+        <item name="android:textColor">@color/text_color_alt</item>
+    </style>
+</resources>
