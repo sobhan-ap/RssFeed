@@ -9,6 +9,10 @@
     <color name="item_surface">#F2F2F2</color>
     <color name="main_surface">#fafafa</color>
 
-    <color name="primary_txt_color">#000000</color>
-    <color name="alt_txt_color">#C4C4C4</color>
+    <color name="text_color_primary">#D9000000</color>
+    <color name="text_color_alt">#99000000</color>
+
+    <color name="orange_alpha_75">#BFF98121</color>
+    <color name="grey_alpha_75">#BFC4C4C4</color>
+    <color name="white_alpha_75">#BFFFFFFF</color>
 </resources>
