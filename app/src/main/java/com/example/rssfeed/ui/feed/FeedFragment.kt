@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.rssfeed.databinding.FragmentFeedBinding
 import com.example.rssfeed.ui.adapters.FeedTabsAdapter
-import com.example.rssfeed.utils.Constants.FEED_TABS_NUMBER
+import com.example.rssfeed.utils.FEED_TABS_NUMBER
 import com.example.rssfeed.utils.FeedTabsType
 import com.google.android.material.tabs.TabLayoutMediator
 

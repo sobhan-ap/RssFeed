@@ -1,5 +1,5 @@
 package com.example.rssfeed.utils
 
-object Constants {
 
-}
+const val FEED_TABS_NUMBER: Int = 2
+
