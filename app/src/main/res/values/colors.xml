@@ -15,4 +15,5 @@
     <color name="orange_alpha_75">#BFF98121</color>
     <color name="grey_alpha_75">#BFC4C4C4</color>
     <color name="white_alpha_75">#BFFFFFFF</color>
+    <color name="colorDivider">#EEF2F5</color>
 </resources>
