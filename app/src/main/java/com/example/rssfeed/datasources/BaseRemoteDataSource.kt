@@ -11,7 +11,7 @@ abstract class BaseRemoteDataSource {
 
     protected suspend fun <T> safeApiCall(apiToBeCalled: suspend () -> Response<T>): NetworkResult<T> {
 
-        return withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.Default) {
             try {
                 val response: Response<T> = apiToBeCalled()
 
