@@ -1,7 +1,12 @@
 package com.example.rssfeed.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class News(
-    val articles: List<Article>,
+    @SerializedName("articles")
+    val jsonArticles: List<JsonArticle>,
+    @SerializedName("status")
     val status: String,
+    @SerializedName("totalResults")
     val totalResults: Int
 )
