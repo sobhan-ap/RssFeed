@@ -1,12 +1,10 @@
 package com.example.rssfeed.data.model
 
-data class Article(
-    val author: String,
-    val content: String,
-    val description: String,
-    val publishedAt: String,
-    val source: Source,
-    val title: String,
-    val url: String,
-    val urlToImage: String
-)
+abstract class Article {
+    abstract val author: String?
+    abstract val description: String?
+    abstract val title: String?
+    abstract val publishedAt: String?
+    abstract val url: String?
+    abstract val urlToImage: String?
+}
