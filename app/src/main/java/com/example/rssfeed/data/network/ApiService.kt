@@ -8,10 +8,9 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("everything")
-    suspend fun getBitCoinNewsList(
-        @Query(value = "q") query: String,
+    suspend fun getJsonNewsList(
+        @Query(value = "domains") domains: String,
         @Query(value = "apiKey") apiKey: String,
-        @Query(value = "pageSize") pageSize: Int,
         @Query(value = "page") page: Int,
     ): Response<News>
 }
