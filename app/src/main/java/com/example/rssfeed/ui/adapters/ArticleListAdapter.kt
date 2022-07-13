@@ -5,24 +5,24 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rssfeed.data.model.Article
+import com.example.rssfeed.data.model.JsonArticle
 import com.example.rssfeed.databinding.ItemNewsOneBinding
 
 class ArticleListAdapter(
-    private val onArticleItemClick: (Article) -> Unit
-) : ListAdapter<Article, ArticleListAdapter.NewsListViewHolder>(
-    object : DiffUtil.ItemCallback<Article>() {
-        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
+    private val onArticleItemClick: (JsonArticle) -> Unit
+) : ListAdapter<JsonArticle, ArticleListAdapter.NewsListViewHolder>(
+    object : DiffUtil.ItemCallback<JsonArticle>() {
+        override fun areItemsTheSame(oldItem: JsonArticle, newItem: JsonArticle): Boolean =
             oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =
+        override fun areContentsTheSame(oldItem: JsonArticle, newItem: JsonArticle): Boolean =
             oldItem == newItem
     }
 ) {
 
     inner class NewsListViewHolder(private val binding: ItemNewsOneBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Article) {
+        fun bind(item: JsonArticle) {
             binding.article = item
             onArticleItemClick(item)
         }
