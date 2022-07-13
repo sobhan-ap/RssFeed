@@ -1,6 +1,10 @@
 package com.example.rssfeed.data.model
 
+import com.google.gson.annotations.SerializedName
+
 data class Source(
-    val id: String,
+    @SerializedName("id")
+    val id: Any,
+    @SerializedName("name")
     val name: String
 )
