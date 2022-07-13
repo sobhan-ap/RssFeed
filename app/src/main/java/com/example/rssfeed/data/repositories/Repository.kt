@@ -1,6 +1,7 @@
 package com.example.rssfeed.data.repositories
 
 import com.example.rssfeed.data.model.News
+import com.example.rssfeed.data.model.XmlArticle
 import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.datasources.LocalDataSource
 import com.example.rssfeed.datasources.RemoteDataSource
@@ -13,7 +14,7 @@ class Repository @Inject constructor(
     private val localDataSource: LocalDataSource
 ) {
     suspend fun getBitcoinNewsRemote(page: Int): NetworkResult<News> {
-        return when (val result = remoteDataSource.getBitcoinList(page)) {
+        return when (val result = remoteDataSource.getJsonNewsListFromNetwork(page)) {
             is NetworkResult.Success ->
                 try {
                     NetworkResult.Success(
@@ -29,4 +30,8 @@ class Repository @Inject constructor(
             }
         }
     }
+
+    suspend fun getXmlNewsRemote(): NetworkResult<List<XmlArticle>> =
+        remoteDataSource.getXmlNewsFromNetwork()
+
 }
