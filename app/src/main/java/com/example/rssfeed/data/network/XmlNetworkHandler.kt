@@ -1,7 +1,7 @@
 package com.example.rssfeed.data.network
 
 import com.example.rssfeed.data.model.XmlArticle
-import com.example.rssfeed.utils.NewsXmlParser
+import com.example.rssfeed.utils.XmlNewsParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
@@ -11,13 +11,13 @@ import javax.inject.Inject
 
 
 class XmlNetworkHandler @Inject constructor(
-    private val newsXmlParser: NewsXmlParser
+    private val xmlNewsParser: XmlNewsParser
 ) {
 
     @Throws(XmlPullParserException::class, IOException::class)
     suspend fun getXmNewsFromNetwork(urlString: String): List<XmlArticle> =
         downloadUrl(urlString)?.use { stream ->
-            newsXmlParser.parse(stream)
+            xmlNewsParser.parse(stream)
         } ?: emptyList()
 
     @Throws(IOException::class)

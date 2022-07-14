@@ -10,7 +10,7 @@ import java.io.IOException
 import java.io.InputStream
 import javax.inject.Inject
 
-class NewsXmlParser @Inject constructor() {
+class XmlNewsParser @Inject constructor() {
 
     private val nameSpace: String? = null
 
