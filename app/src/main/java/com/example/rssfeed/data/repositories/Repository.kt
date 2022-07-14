@@ -3,8 +3,8 @@ package com.example.rssfeed.data.repositories
 import com.example.rssfeed.data.model.News
 import com.example.rssfeed.data.model.XmlArticle
 import com.example.rssfeed.data.network.NetworkResult
-import com.example.rssfeed.datasources.LocalDataSource
-import com.example.rssfeed.datasources.RemoteDataSource
+import com.example.rssfeed.data.datasources.LocalDataSource
+import com.example.rssfeed.data.datasources.RemoteDataSource
 import javax.inject.Inject
 import javax.inject.Singleton
 

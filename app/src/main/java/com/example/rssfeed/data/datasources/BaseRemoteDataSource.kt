@@ -1,4 +1,4 @@
-package com.example.rssfeed.datasources
+package com.example.rssfeed.data.datasources
 
 import com.example.rssfeed.data.network.NetworkResult
 import kotlinx.coroutines.Dispatchers
