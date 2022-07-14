@@ -29,7 +29,7 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
     }
 
     private fun initObservers() {
-        _viewModel.getXmlArticle.observe(viewLifecycleOwner) { result ->
+        _viewModel.getXmlNews.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is NetworkResult.Success -> {
                     binding.refreshLayout.isRefreshing = false
@@ -45,6 +45,9 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
     }
 
     private fun initViews() {
+        binding.refreshLayout.setOnRefreshListener {
+            _viewModel.getXmlNewsList()
+        }
         initRecyclerView()
     }
 
