@@ -4,42 +4,73 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import com.example.rssfeed.data.model.Article
 import com.example.rssfeed.data.model.JsonArticle
-import com.example.rssfeed.databinding.ItemNewsOneBinding
+import com.example.rssfeed.data.model.XmlArticle
+import com.example.rssfeed.databinding.ItemJsonNewsBinding
+import com.example.rssfeed.databinding.ItemXmlNewsBinding
+import com.example.rssfeed.utils.ArticleType
+import com.example.rssfeed.utils.BaseViewHolder
 
 class ArticleListAdapter(
-    private val onArticleItemClick: (JsonArticle) -> Unit
-) : ListAdapter<JsonArticle, ArticleListAdapter.NewsListViewHolder>(
-    object : DiffUtil.ItemCallback<JsonArticle>() {
-        override fun areItemsTheSame(oldItem: JsonArticle, newItem: JsonArticle): Boolean =
+    private val onArticleItemClick: (Article) -> Unit
+) : ListAdapter<Article, BaseViewHolder>(
+
+    object : DiffUtil.ItemCallback<Article>() {
+        override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
             oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: JsonArticle, newItem: JsonArticle): Boolean =
-            oldItem == newItem
-    }
-) {
+        override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =
+            when (oldItem) {
+                is JsonArticle -> oldItem as JsonArticle == newItem as JsonArticle
+                is XmlArticle -> oldItem as XmlArticle == newItem as XmlArticle
+                else -> false
+            }
+    }) {
 
-    inner class NewsListViewHolder(private val binding: ItemNewsOneBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: JsonArticle) {
-            binding.article = item
-            onArticleItemClick(item)
-        }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsListViewHolder {
-        return NewsListViewHolder(
-            ItemNewsOneBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
+        if (viewType == ArticleType.XML.type)
+            XmlNewsViewHolder(
+                ItemXmlNewsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+            ) else
+                JsonNewsViewHolder(
+            ItemJsonNewsBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
         )
+
+
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).viewType
     }
 
-    override fun onBindViewHolder(holder: NewsListViewHolder, position: Int) {
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) =
         holder.bind(getItem(position))
+
+
+    inner class JsonNewsViewHolder(private val binding: ItemJsonNewsBinding) :
+        BaseViewHolder(binding) {
+
+        override fun bind(item: Article) {
+            binding.article = item as JsonArticle
+            onArticleItemClick(item)
+        }
+    }
+
+    inner class XmlNewsViewHolder(private val binding: ItemXmlNewsBinding) :
+        BaseViewHolder(binding) {
+
+        override fun bind(item: Article) {
+            binding.xmlArticle = item as XmlArticle
+            onArticleItemClick(item)
+        }
     }
 
 }
