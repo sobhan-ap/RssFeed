@@ -30,7 +30,7 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
 
 
     private fun initObservers() {
-        _viewModel.getBitcoinNews.observe(viewLifecycleOwner) { result ->
+        _viewModel.getJsonNews.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is NetworkResult.Success -> {
                     binding.refreshLayout.isRefreshing = false
@@ -48,7 +48,7 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
 
     private fun initViews() {
         binding.refreshLayout.setOnRefreshListener {
-            _viewModel.getBitcoinNewsList()
+            _viewModel.getJsonNewsList()
         }
         initRecyclerView()
     }

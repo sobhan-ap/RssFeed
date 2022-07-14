@@ -20,32 +20,32 @@ class FeedViewModel @Inject constructor(
 
     private var _pageNumber = 1
 
-    private val _getBitcoinNews = MutableLiveData<NetworkResult<News>>()
-    val getBitcoinNews: LiveData<NetworkResult<News>>
-        get() = _getBitcoinNews
+    private val _getJsonNews = MutableLiveData<NetworkResult<News>>()
+    val getJsonNews: LiveData<NetworkResult<News>>
+        get() = _getJsonNews
 
-    private val _getXmlArticle = MutableLiveData<NetworkResult<List<XmlArticle>>>()
-    val getXmlArticle: LiveData<NetworkResult<List<XmlArticle>>>
-        get() = _getXmlArticle
+    private val _getXmlNews = MutableLiveData<NetworkResult<List<XmlArticle>>>()
+    val getXmlNews: LiveData<NetworkResult<List<XmlArticle>>>
+        get() = _getXmlNews
 
     init {
-        getBitcoinNewsList()
+        getJsonNewsList()
         getXmlNewsList()
     }
 
-    fun getBitcoinNewsList() {
+    fun getJsonNewsList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _getBitcoinNews.postValue(NetworkResult.Loading())
-            _getBitcoinNews.postValue(
-                repository.getBitcoinNewsRemote(_pageNumber)
+            _getJsonNews.postValue(NetworkResult.Loading())
+            _getJsonNews.postValue(
+                repository.getJsonNewsRemote(_pageNumber)
             )
         }
     }
 
     fun getXmlNewsList() {
         viewModelScope.launch(Dispatchers.IO) {
-            _getXmlArticle.postValue(NetworkResult.Loading())
-            _getXmlArticle.postValue(
+            _getXmlNews.postValue(NetworkResult.Loading())
+            _getXmlNews.postValue(
                 repository.getXmlNewsRemote()
             )
         }

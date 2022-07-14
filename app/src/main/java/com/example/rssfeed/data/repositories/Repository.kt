@@ -13,7 +13,7 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) {
-    suspend fun getBitcoinNewsRemote(page: Int): NetworkResult<News> {
+    suspend fun getJsonNewsRemote(page: Int): NetworkResult<News> {
         return when (val result = remoteDataSource.getJsonNewsListFromNetwork(page)) {
             is NetworkResult.Success ->
                 try {
