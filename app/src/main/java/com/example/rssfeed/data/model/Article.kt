@@ -7,4 +7,5 @@ abstract class Article {
     abstract val publishedAt: String?
     abstract val url: String?
     abstract val urlToImage: String?
+    abstract val viewType: Int
 }

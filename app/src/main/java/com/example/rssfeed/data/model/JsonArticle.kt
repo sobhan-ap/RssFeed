@@ -1,5 +1,7 @@
 package com.example.rssfeed.data.model
 
+import com.example.rssfeed.utils.ArticleType
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class JsonArticle(
@@ -19,4 +21,6 @@ data class JsonArticle(
     val content: String,
     @SerializedName("source")
     val source: Source,
+    @Expose(serialize = false, deserialize = false)
+    override val viewType: Int = ArticleType.JSON.type,
 ) : Article()
