@@ -1,90 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding_16">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/img_news"
-        setImageUrlMediumRadius="@{article.urlToImage}"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_item_news_one"
-        android:scaleType="centerCrop"
-        android:layout_marginEnd="@dimen/margin_8"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/tv_title"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/test" />
+    <data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_title"
-        style="@style/TextView.Normal.Size14.Title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@{article.title}"
-        app:layout_constraintHorizontal_weight="2"
-        app:layout_constraintLeft_toRightOf="@id/img_news"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Climate change: Arctic warming linked to colder winters" />
+        <variable
+            name="xmlArticle"
+            type="com.example.rssfeed.data.model.XmlArticle" />
+    </data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_description"
-        style="@style/TextView.Thin.Size12.Description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_8"
-        android:maxLines="2"
-        android:text="@{article.content}"
-        app:layout_constraintEnd_toEndOf="@+id/tv_title"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        tools:text="Climate change: Arctic warming linked to colder winters
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_16">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_news"
+            setImageUrlMediumRadius="@{xmlArticle.urlToImage}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:background="@drawable/bg_item_news_one"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_title"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/test" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/TextView.Normal.Size14.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{xmlArticle.title}"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintLeft_toRightOf="@id/img_news"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Climate change: Arctic warming linked to colder winters" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_description"
+            style="@style/TextView.Thin.Size12.Description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
+            android:maxLines="2"
+            android:text="@{xmlArticle.description}"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            tools:text="Climate change: Arctic warming linked to colder winters
 Climate change: Arctic warming linked to colder winters
 Climate change: Arctic warming linked to colder winters
 Climate change: Arctic warming linked to colder winters" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_source"
-        style="@style/TextView.Thin.Size8.Source"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_item_source"
-        android:paddingStart="@dimen/padding_4"
-        android:paddingTop="@dimen/padding_2"
-        android:paddingEnd="@dimen/padding_4"
-        android:paddingBottom="@dimen/padding_2"
-        android:text="@{article.source.name}"
-        app:layout_constraintBottom_toTopOf="@+id/tv_time"
-        app:layout_constraintStart_toStartOf="@+id/tv_description"
-        app:layout_constraintTop_toBottomOf="@+id/tv_description"
-        tools:text="BBC News" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_source"
+            style="@style/TextView.Thin.Size8.Source"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_item_source"
+            android:paddingStart="@dimen/padding_4"
+            android:paddingTop="@dimen/padding_2"
+            android:paddingEnd="@dimen/padding_4"
+            android:paddingBottom="@dimen/padding_2"
+            android:text="@{xmlArticle.author}"
+            app:layout_constraintBottom_toTopOf="@+id/tv_time"
+            app:layout_constraintStart_toStartOf="@+id/tv_description"
+            app:layout_constraintTop_toBottomOf="@+id/tv_description"
+            tools:text="BBC News" />
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_time"
-        style="@style/TextView.Thin.Size8.TimeBlack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_4"
-        android:paddingTop="@dimen/padding_2"
-        android:paddingEnd="@dimen/padding_4"
-        android:paddingBottom="@dimen/padding_2"
-        android:text="@{article.publishedAt}"
-        app:layout_constraintBottom_toBottomOf="@+id/img_news"
-        app:layout_constraintStart_toStartOf="@+id/tv_description"
-        tools:text="2022-06-09T19:45:00Z" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            style="@style/TextView.Thin.Size8.TimeBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_4"
+            android:paddingTop="@dimen/padding_2"
+            android:paddingEnd="@dimen/padding_4"
+            android:paddingBottom="@dimen/padding_2"
+            android:text="@{xmlArticle.publishedAt}"
+            app:layout_constraintBottom_toBottomOf="@+id/img_news"
+            app:layout_constraintStart_toStartOf="@+id/tv_description"
+            tools:text="2022-06-09T19:45:00Z" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/padding_2"
-        android:src="@drawable/ic_unfavorite_alpha_75"
-        app:layout_constraintBottom_toBottomOf="@+id/img_news"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_2"
+            android:src="@drawable/ic_unfavorite_alpha_75"
+            app:layout_constraintBottom_toBottomOf="@+id/img_news"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
