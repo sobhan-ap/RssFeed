@@ -10,6 +10,7 @@ import com.example.rssfeed.databinding.FragmentXmlNewsBinding
 import com.example.rssfeed.ui.adapters.ArticleListAdapter
 import com.example.rssfeed.ui.feed.FeedViewModel
 import com.example.rssfeed.utils.BaseFragment
+import com.example.rssfeed.utils.addVerticalDividerSpacing16
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +34,7 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
             when (result) {
                 is NetworkResult.Success -> {
                     binding.refreshLayout.isRefreshing = false
+                    _articleAdapter.submitList(result.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.refreshLayout.isRefreshing = true
@@ -55,6 +57,9 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
         _articleAdapter = ArticleListAdapter {
             //TODO navigation to WebView
         }
-        binding.rvNewsList.adapter = _articleAdapter
+        binding.rvNewsList.apply {
+            addVerticalDividerSpacing16(requireContext())
+            adapter = _articleAdapter
+        }
     }
 }
