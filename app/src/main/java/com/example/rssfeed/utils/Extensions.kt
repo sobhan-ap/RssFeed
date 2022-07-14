@@ -8,10 +8,17 @@ import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
+import com.example.rssfeed.R
 
 fun AppCompatImageView.loadImageWithGlide(url: String?) {
+
     Glide.with(this)
         .load(url)
+        .apply {
+            RequestOptions()
+                .placeholder(R.drawable.ic_not_image)
+        }
         .transition(DrawableTransitionOptions.withCrossFade())
         .into(this)
 }
