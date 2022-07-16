@@ -37,13 +37,13 @@ class ArticleListAdapter(
                     false
                 )
             ) else
-                JsonNewsViewHolder(
-            ItemJsonNewsBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
+            JsonNewsViewHolder(
+                ItemJsonNewsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
             )
-        )
 
 
     override fun getItemViewType(position: Int): Int {
@@ -60,7 +60,9 @@ class ArticleListAdapter(
 
         override fun bind(item: Article) {
             binding.article = item as JsonArticle
-            onArticleItemClick(item)
+            binding.root.setOnClickListener {
+                onArticleItemClick(item)
+            }
         }
     }
 
@@ -69,7 +71,9 @@ class ArticleListAdapter(
 
         override fun bind(item: Article) {
             binding.xmlArticle = item as XmlArticle
-            onArticleItemClick(item)
+            binding.root.setOnClickListener {
+                onArticleItemClick(item)
+            }
         }
     }
 
