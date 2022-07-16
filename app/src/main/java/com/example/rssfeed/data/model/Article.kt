@@ -1,6 +1,8 @@
 package com.example.rssfeed.data.model
 
-abstract class Article {
+import android.os.Parcelable
+
+abstract class Article : Parcelable {
     abstract val author: String?
     abstract val description: String?
     abstract val title: String?

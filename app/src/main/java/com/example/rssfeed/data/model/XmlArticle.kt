@@ -1,8 +1,9 @@
 package com.example.rssfeed.data.model
 
 import com.example.rssfeed.utils.ArticleType
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class XmlArticle(
     override val author: String?,
     override val description: String?,

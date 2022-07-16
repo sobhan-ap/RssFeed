@@ -3,8 +3,10 @@ package com.example.rssfeed.data.model
 import com.example.rssfeed.utils.ArticleType
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-data class JsonArticle(
+@Parcelize
+data class JsonArticle (
     @SerializedName("author")
     override val author: String?,
     @SerializedName("description")
