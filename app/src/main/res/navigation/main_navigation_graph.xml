@@ -10,9 +10,21 @@
         android:name="com.example.rssfeed.ui.feed.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" />
+
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.rssfeed.ui.favorite.FavoriteFragment"
         android:label="fragment_favorite"
         tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/webViewFragment"
+        android:name="com.example.rssfeed.ui.webview.WebViewFragment"
+        android:label="WebViewFragment">
+        <argument
+            android:name="webUrl"
+            app:argType="com.example.rssfeed.data.model.Article"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>
