@@ -6,10 +6,10 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.rssfeed.R
+import com.example.rssfeed.data.model.JsonArticle
 import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.databinding.FragmentJsonNewsBinding
 import com.example.rssfeed.ui.adapters.ArticleListAdapter
-import com.example.rssfeed.ui.feed.FeedViewModel
 import com.example.rssfeed.utils.BaseFragment
 import com.example.rssfeed.utils.WEB_URL_ARG
 import com.example.rssfeed.utils.addVerticalDividerSpacing16
@@ -21,7 +21,7 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_json_news
 
-    private val _viewModel by viewModels<FeedViewModel>()
+    private val _viewModel by viewModels<JsonNewsViewModel>()
     private lateinit var _articleAdapter: ArticleListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,13 +36,13 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
             when (result) {
                 is NetworkResult.Success -> {
                     binding.refreshLayout.isRefreshing = false
-                    _articleAdapter.submitList(result.data?.jsonArticles)
+                    _articleAdapter.submitList(result.data!!.jsonArticles)
                 }
                 is NetworkResult.Loading -> {
                     binding.refreshLayout.isRefreshing = true
                 }
                 is NetworkResult.Error -> {
-                    Toast.makeText(requireContext(), "Error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -56,17 +56,24 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
     }
 
     private fun initRecyclerView() {
-        _articleAdapter = ArticleListAdapter { article ->
-            val bundle = Bundle().apply {
-                putParcelable(WEB_URL_ARG, article)
-            }
-            findNavController().navigate(R.id.webViewFragment, bundle)
-        }
-        binding.rvBitcoinNewsList.apply {
+        _articleAdapter = ArticleListAdapter(
+            onArticleItemClick = { article ->
+                val bundle = Bundle().apply {
+                    putParcelable(WEB_URL_ARG, article)
+                }
+                findNavController().navigate(R.id.webViewFragment, bundle)
+            },
+            onFavoriteClick = { article ->
+                article as JsonArticle
+                if (article.isFavorite)
+                    _viewModel.unfavoriteArticle(article.id)
+                else
+                    _viewModel.setFavoriteArticle(article)
+            })
+        binding.rvJsonNewsList.apply {
             addVerticalDividerSpacing16(requireContext())
             adapter = _articleAdapter
         }
     }
-
 
 }

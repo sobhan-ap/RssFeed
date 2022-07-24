@@ -2,6 +2,7 @@ package com.example.rssfeed.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.rssfeed.data.model.Article
@@ -11,9 +12,12 @@ import com.example.rssfeed.databinding.ItemJsonNewsBinding
 import com.example.rssfeed.databinding.ItemXmlNewsBinding
 import com.example.rssfeed.utils.ArticleType
 import com.example.rssfeed.utils.BaseViewHolder
+import com.example.rssfeed.utils.OnArticleClick
+import com.example.rssfeed.utils.changeFavoriteState
 
 class ArticleListAdapter(
-    private val onArticleItemClick: (Article) -> Unit
+    private val onArticleItemClick: OnArticleClick,
+    private val onFavoriteClick: OnArticleClick
 ) : ListAdapter<Article, BaseViewHolder>(
 
     object : DiffUtil.ItemCallback<Article>() {
@@ -28,32 +32,52 @@ class ArticleListAdapter(
             }
     }) {
 
+    override fun getItemViewType(position: Int): Int =
+        when (getItem(position)) {
+            is JsonArticle -> ArticleType.JSON.type
+            is XmlArticle -> ArticleType.XML.type
+            else -> throw IllegalArgumentException("GetItemType: Unsupported Type")
+        }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder =
-        if (viewType == ArticleType.XML.type)
-            XmlNewsViewHolder(
-                ItemXmlNewsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+        when (viewType) {
+            ArticleType.JSON.type -> {
+                JsonNewsViewHolder(
+                    ItemJsonNewsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
                 )
-            ) else
-            JsonNewsViewHolder(
-                ItemJsonNewsBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
+            }
+            ArticleType.XML.type -> {
+                XmlNewsViewHolder(
+                    ItemXmlNewsBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent,
+                        false
+                    )
                 )
-            )
+            }
+            else -> throw IllegalArgumentException("Unsupported Type: onCreateVH")
+        }
 
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        var item: Article = getItem(position)
+        var type: Int = getItemViewType(position)
+        when (item) {
+            is JsonArticle -> (holder as JsonNewsViewHolder).bind(item)
+            is XmlArticle -> (holder as XmlNewsViewHolder).bind(item)
+            else -> throw IllegalArgumentException("Unsupported Type: onBindVH")
+        }
 
-    override fun getItemViewType(position: Int): Int {
-        return getItem(position).viewType
     }
 
-
-    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) =
-        holder.bind(getItem(position))
-
+    private fun onFavoriteClickListener(item: Article, img: AppCompatImageView) {
+        onFavoriteClick(item)
+        img.changeFavoriteState(item.isFavorite)
+        item.isFavorite = !item.isFavorite
+    }
 
     inner class JsonNewsViewHolder(private val binding: ItemJsonNewsBinding) :
         BaseViewHolder(binding) {
@@ -62,6 +86,9 @@ class ArticleListAdapter(
             binding.article = item as JsonArticle
             binding.root.setOnClickListener {
                 onArticleItemClick(item)
+            }
+            binding.imgFavorite.setOnClickListener {
+                onFavoriteClickListener(item, binding.imgFavorite)
             }
         }
     }
@@ -73,6 +100,9 @@ class ArticleListAdapter(
             binding.xmlArticle = item as XmlArticle
             binding.root.setOnClickListener {
                 onArticleItemClick(item)
+            }
+            binding.imgFavorite.setOnClickListener {
+                onFavoriteClickListener(item, binding.imgFavorite)
             }
         }
     }

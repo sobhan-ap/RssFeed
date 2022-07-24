@@ -49,11 +49,7 @@
             android:text="@{article.content}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            tools:text="Climate change: Arctic warming linked to colder winters
-Climate change: Arctic warming linked to colder winters
-Climate change: Arctic warming linked to colder winters
-Climate change: Arctic warming linked to colder winters" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_source"
@@ -90,12 +86,13 @@ Climate change: Arctic warming linked to colder winters" />
             tools:text="2022-06-09T19:45:00Z" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img_favorite"
+            setImageFavoriteState="@{article.favorite}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@drawable/bg_item_favorite"
             android:padding="@dimen/padding_2"
-            android:src="@drawable/ic_unfavorite_alpha_75"
             app:layout_constraintBottom_toBottomOf="@+id/tv_time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_source" />

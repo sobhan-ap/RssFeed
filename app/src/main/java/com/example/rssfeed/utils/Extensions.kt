@@ -73,3 +73,11 @@ fun NestedScrollView.scrollToTop() {
 fun RecyclerView.scrollToTop() {
     smoothScrollToPosition(0)
 }
+
+fun AppCompatImageView.changeFavoriteState(state: Boolean) {
+    if (state)
+        setImageResource(R.drawable.ic_unfavorite_alpha_75)
+    else
+        setImageResource(R.drawable.ic_favorite_alpha_75)
+}
+

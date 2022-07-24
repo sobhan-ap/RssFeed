@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.rssfeed.R
+import com.example.rssfeed.data.model.XmlArticle
 import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.databinding.FragmentXmlNewsBinding
 import com.example.rssfeed.ui.adapters.ArticleListAdapter
-import com.example.rssfeed.ui.feed.FeedViewModel
 import com.example.rssfeed.utils.BaseFragment
+import com.example.rssfeed.utils.WEB_URL_ARG
 import com.example.rssfeed.utils.addVerticalDividerSpacing16
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,7 +21,7 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
     override val layoutId: Int
         get() = R.layout.fragment_xml_news
 
-    private val _viewModel by viewModels<FeedViewModel>()
+    private val _viewModel by viewModels<XmlNewsViewModel>()
     private lateinit var _articleAdapter: ArticleListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,9 +56,20 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
     }
 
     private fun initRecyclerView() {
-        _articleAdapter = ArticleListAdapter {
-            //TODO navigation to WebView
-        }
+        _articleAdapter = ArticleListAdapter(
+            onArticleItemClick = { article ->
+                val bundle = Bundle().apply {
+                    putParcelable(WEB_URL_ARG, article)
+                }
+                findNavController().navigate(R.id.webViewFragment, bundle)
+            },
+            onFavoriteClick = { article ->
+                article as XmlArticle
+                if (article.isFavorite)
+                    _viewModel.unfavoriteFavorite(article.id)
+                else
+                    _viewModel.setFavoriteArticle(article)
+            })
         binding.rvNewsList.apply {
             addVerticalDividerSpacing16(requireContext())
             adapter = _articleAdapter

@@ -10,4 +10,6 @@ abstract class Article : Parcelable {
     abstract val url: String?
     abstract val urlToImage: String?
     abstract val viewType: Int
+    abstract val time: Long
+    abstract var isFavorite: Boolean
 }

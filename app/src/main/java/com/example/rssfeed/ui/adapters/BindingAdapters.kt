@@ -4,6 +4,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
+import com.example.rssfeed.R
 import com.example.rssfeed.utils.loadImageWithGlideMediumRadius
 
 @BindingAdapter("setImageUrlMediumRadius")
@@ -32,4 +33,12 @@ fun setVisibilityInvisible(view: View, isInvisible: Boolean) {
 @BindingAdapter("setDisable")
 fun setDisable(view: View, isLoading: Boolean) {
     view.isEnabled = !isLoading
+}
+
+@BindingAdapter("setImageFavoriteState")
+fun setImageFavoriteState(imageView: AppCompatImageView, isFavorite: Boolean = false) {
+    if (isFavorite)
+        imageView.setImageResource(R.drawable.ic_favorite_alpha_75)
+    else
+        imageView.setImageResource(R.drawable.ic_unfavorite_alpha_75)
 }

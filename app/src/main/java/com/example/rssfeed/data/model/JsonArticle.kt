@@ -1,12 +1,16 @@
 package com.example.rssfeed.data.model
 
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.example.rssfeed.utils.ArticleType
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class JsonArticle (
+@Entity(tableName = "json_article")
+data class JsonArticle(
     @SerializedName("author")
     override val author: String?,
     @SerializedName("description")
@@ -22,7 +26,15 @@ data class JsonArticle (
     @SerializedName("content")
     val content: String,
     @SerializedName("source")
+    @Embedded
     val source: Source,
     @Expose(serialize = false, deserialize = false)
     override val viewType: Int = ArticleType.JSON.type,
+    @Expose(serialize = false, deserialize = false)
+    override val time: Long = 0L,
+    @Expose(serialize = false, deserialize = false)
+    override var isFavorite: Boolean,
+    @Expose(serialize = false, deserialize = false)
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
 ) : Article()
