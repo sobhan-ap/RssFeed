@@ -4,14 +4,11 @@ import com.example.rssfeed.data.datasources.LocalDataSource
 import com.example.rssfeed.data.datasources.RemoteDataSource
 import com.example.rssfeed.data.model.Article
 import com.example.rssfeed.data.model.JsonArticle
-import com.example.rssfeed.data.model.News
 import com.example.rssfeed.data.model.XmlArticle
 import com.example.rssfeed.data.network.NetworkResult
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.example.rssfeed.utils.GetData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.zip
-import kotlinx.coroutines.launch
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import javax.inject.Inject
@@ -22,39 +19,13 @@ class Repository @Inject constructor(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
 ) {
-    private lateinit var favoriteJsonArticles: Map<String, Int>
-    private lateinit var favoriteXmlArticles: Map<String, Int>
 
-    init {
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.getAllFavoriteJsonArticles().collect { localArticles ->
-                favoriteJsonArticles = localArticles.associate {
-                    it.title!! to it.id
-                }
-            }
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            localDataSource.getAllFavoriteXmlArticles().collect { localArticles ->
-                favoriteXmlArticles = localArticles.associate {
-                    it.title!! to it.id
-                }
-            }
-        }
-    }
-
-    suspend fun getJsonNewsRemote(page: Int): NetworkResult<News> {
+    private suspend fun getJsonNewsRemote(page: Int): NetworkResult<Unit> {
         return when (val result = remoteDataSource.getJsonNewsListFromNetwork(page)) {
             is NetworkResult.Success ->
                 try {
-                    result.data!!.jsonArticles.forEach {
-                        if (favoriteJsonArticles.containsKey(it.title)) {
-                            it.isFavorite = true
-                            it.id = favoriteJsonArticles[it.title]!!
-                        }
-                    }
                     NetworkResult.Success(
-                        data = result.data
+                        data = localDataSource.insertJsonArticleList(result.data!!.jsonArticles)
                     )
                 } catch (e: Exception) {
                     NetworkResult.Error(e.message.toString())
@@ -67,16 +38,11 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun getXmlNewsRemote(): NetworkResult<List<XmlArticle>> {
+    private suspend fun getXmlNewsRemote(): NetworkResult<Unit> {
         return try {
-            val result: List<XmlArticle> = remoteDataSource.getXmlNewsFromNetwork()
-            result.forEach {
-                if (favoriteXmlArticles.containsKey(it.title)) {
-                    it.isFavorite = true
-                    it.id = favoriteXmlArticles[it.title]!!
-                }
-            }
-            NetworkResult.Success(result)
+            NetworkResult.Success(
+                localDataSource.insertXmlArticleList(remoteDataSource.getXmlNewsFromNetwork())
+            )
         } catch (e: IOException) {
             NetworkResult.Error(errorMessage = e.message.toString())
         } catch (e: XmlPullParserException) {
@@ -84,46 +50,51 @@ class Repository @Inject constructor(
         }
     }
 
-    suspend fun getAllFavoriteArticles(): Flow<List<Article>> =
-        localDataSource.getAllFavoriteXmlArticles()
-            .zip(localDataSource.getAllFavoriteJsonArticles()) { xml, json ->
-                val lst = mutableListOf<Article>()
-                with(lst) {
-                    addAll(xml)
+    suspend fun getJsonArticlesList(getData: GetData): Flow<List<JsonArticle>> {
+        return when (getData) {
+            GetData.Remote -> {
+                localDataSource.clearJsonTableUntilFavorites()
+                getJsonNewsRemote(1)
+                localDataSource.getJsonArticleList()
+            }
+            GetData.Local -> {
+                localDataSource.getJsonArticleList()
+            }
+        }
+    }
+
+    suspend fun getXmlArticlesList(getData: GetData): Flow<List<XmlArticle>> =
+        when (getData) {
+            GetData.Remote -> {
+                localDataSource.clearXmlTableUntilFavorites()
+                getXmlNewsRemote()
+                localDataSource.getXmlArticleList()
+            }
+            GetData.Local -> localDataSource.getXmlArticleList()
+        }
+
+    fun getAllFavoriteArticles(): Flow<List<Article>> =
+        localDataSource.getAllFavoriteJsonArticles()
+            .zip(localDataSource.getAllFavoriteXmlArticles()) { json, xml ->
+                mutableListOf<Article>().apply {
                     addAll(json)
-                    return@zip lst
+                    addAll(xml)
                 }
             }
 
-
-    suspend fun insertNewFavoriteXmlArticle(xmlArticle: XmlArticle) {
-        if (!favoriteXmlArticles.containsKey(xmlArticle.title))
-            localDataSource.insertNewFavoriteXmlArticle(
-                xmlArticle.copy(
-                    isFavorite = true,
-                    time = getCurrentTimestamp()
-                )
+    suspend fun setFavoriteStateXmlArticle(xmlArticle: XmlArticle): Long =
+        localDataSource.setFavoriteStateXmlArticle(
+            xmlArticle.copy(
+                time = getCurrentTimestamp()
             )
-        getAllFavoriteArticles()
-    }
+        )
 
-    suspend fun insertNewFavoriteJsonArticle(jsonArticle: JsonArticle) {
-        if (!favoriteJsonArticles.containsKey(jsonArticle.title))
-            localDataSource.insertNewFavoriteJsonArticle(
-                jsonArticle.copy(
-                    isFavorite = true,
-                    time = getCurrentTimestamp()
-                )
+    suspend fun setFavoriteStateJsonArticle(jsonArticle: JsonArticle): Long =
+        localDataSource.setFavoriteStateJsonArticle(
+            jsonArticle.copy(
+                time = getCurrentTimestamp()
             )
-    }
-
-    suspend fun deleteFavoriteXmlArticle(id: Int) {
-        localDataSource.deleteFavoriteXmlArticle(id)
-    }
-
-    suspend fun deleteFavoriteJsonArticle(id: Int) {
-        localDataSource.deleteFavoriteJsonArticle(id)
-    }
+        )
 
     private fun getCurrentTimestamp(): Long = System.currentTimeMillis()
 }
