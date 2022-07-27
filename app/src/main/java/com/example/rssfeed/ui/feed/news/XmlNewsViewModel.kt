@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.rssfeed.data.model.XmlArticle
 import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.data.repositories.Repository
+import com.example.rssfeed.utils.GetData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,29 +23,29 @@ class XmlNewsViewModel @Inject constructor(
         get() = _getXmlNews
 
     init {
-        getXmlNewsList()
+        getXmlNewsList(GetData.Remote)
     }
 
-    fun getXmlNewsList() {
+    fun getXmlNewsList(getData: GetData) {
         viewModelScope.launch(Dispatchers.IO) {
             _getXmlNews.postValue(NetworkResult.Loading())
-            _getXmlNews.postValue(
-                repository.getXmlNewsRemote()
-            )
+            repository.getXmlArticlesList(getData).collect { articles ->
+                _getXmlNews.postValue(
+                    NetworkResult.Success(articles)
+                )
+            }
         }
     }
 
-    fun unfavoriteFavorite(id: Int) {
+    fun unfavoriteFavorite(article: XmlArticle) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.deleteFavoriteXmlArticle(id)
-            repository.getAllFavoriteArticles()
+            repository.setFavoriteStateXmlArticle(article)
         }
     }
 
     fun setFavoriteArticle(article: XmlArticle) {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.insertNewFavoriteXmlArticle(article)
-            repository.getAllFavoriteArticles()
+            repository.setFavoriteStateXmlArticle(article)
         }
     }
 }
