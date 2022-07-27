@@ -35,13 +35,10 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdateJsonArticle(jsonArticle: JsonArticle): Long
 
-    @Query("DELETE FROM xml_article WHERE isFavorite = 0")
-    suspend fun clearXmlTableUntilFavorites()
+    @Query("DELETE FROM xml_article")
+    suspend fun clearXmlTable()
 
-    @Query("DELETE FROM json_article WHERE isFavorite = 0")
-    suspend fun clearJsonTableUntilFavorites()
-
-//    @Query("DELETE FROM json_article WHERE id = :articleId")
-//    suspend fun deleteJsonArticleById(articleId: Int)
+    @Query("DELETE FROM json_article")
+    suspend fun clearJsonTable()
 
 }
