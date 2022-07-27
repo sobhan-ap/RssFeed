@@ -11,6 +11,7 @@ import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.databinding.FragmentJsonNewsBinding
 import com.example.rssfeed.ui.adapters.ArticleListAdapter
 import com.example.rssfeed.utils.BaseFragment
+import com.example.rssfeed.utils.GetData
 import com.example.rssfeed.utils.WEB_URL_ARG
 import com.example.rssfeed.utils.addVerticalDividerSpacing16
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +37,7 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
             when (result) {
                 is NetworkResult.Success -> {
                     binding.refreshLayout.isRefreshing = false
-                    _articleAdapter.submitList(result.data!!.jsonArticles)
+                    _articleAdapter.submitList(result.data)
                 }
                 is NetworkResult.Loading -> {
                     binding.refreshLayout.isRefreshing = true
@@ -50,7 +51,7 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
 
     private fun initViews() {
         binding.refreshLayout.setOnRefreshListener {
-            _viewModel.getJsonNewsList()
+            _viewModel.getJsonNewsList(GetData.Local)
         }
         initRecyclerView()
     }
@@ -66,9 +67,13 @@ class JsonNewsFragment : BaseFragment<FragmentJsonNewsBinding>() {
             onFavoriteClick = { article ->
                 article as JsonArticle
                 if (article.isFavorite)
-                    _viewModel.unfavoriteArticle(article.id)
+                    _viewModel.unfavoriteArticle(article.apply {
+                        isFavorite = !isFavorite
+                    })
                 else
-                    _viewModel.setFavoriteArticle(article)
+                    _viewModel.setFavoriteArticle(article.apply {
+                        isFavorite = !isFavorite
+                    })
             })
         binding.rvJsonNewsList.apply {
             addVerticalDividerSpacing16(requireContext())
