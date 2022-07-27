@@ -38,11 +38,11 @@ class LocalDataSource @Inject constructor(
     suspend fun setFavoriteStateJsonArticle(jsonArticle: JsonArticle): Long =
         articleDao.insertOrUpdateJsonArticle(jsonArticle)
 
-    suspend fun clearXmlTableUntilFavorites() {
-        articleDao.clearXmlTableUntilFavorites()
+    suspend fun clearXmlTable() {
+        articleDao.clearXmlTable()
     }
 
-    suspend fun clearJsonTableUntilFavorites() {
-        articleDao.clearJsonTableUntilFavorites()
+    suspend fun clearJsonTable() {
+        articleDao.clearJsonTable()
     }
 }

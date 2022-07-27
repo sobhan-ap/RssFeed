@@ -53,7 +53,7 @@ class Repository @Inject constructor(
     suspend fun getJsonArticlesList(getData: GetData): Flow<List<JsonArticle>> {
         return when (getData) {
             GetData.Remote -> {
-                localDataSource.clearJsonTableUntilFavorites()
+                localDataSource.clearJsonTable()
                 getJsonNewsRemote(1)
                 localDataSource.getJsonArticleList()
             }
@@ -66,7 +66,7 @@ class Repository @Inject constructor(
     suspend fun getXmlArticlesList(getData: GetData): Flow<List<XmlArticle>> =
         when (getData) {
             GetData.Remote -> {
-                localDataSource.clearXmlTableUntilFavorites()
+                localDataSource.clearXmlTable()
                 getXmlNewsRemote()
                 localDataSource.getXmlArticleList()
             }
