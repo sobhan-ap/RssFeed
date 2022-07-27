@@ -12,25 +12,37 @@ class LocalDataSource @Inject constructor(
     private val articleDao: ArticleDao
 ) {
 
-    suspend fun getAllFavoriteXmlArticles(): Flow<List<XmlArticle>> =
-        articleDao.getXmlArticles()
+    fun getXmlArticleList(): Flow<List<XmlArticle>> =
+        articleDao.getXmlArticleList()
 
-    suspend fun getAllFavoriteJsonArticles(): Flow<List<JsonArticle>> =
-        articleDao.getJsonArticles()
+    fun getJsonArticleList(): Flow<List<JsonArticle>> =
+        articleDao.getJsonArticleList()
 
-    suspend fun insertNewFavoriteXmlArticle(xmlArticle: XmlArticle) {
-        articleDao.insertXmlArticle(xmlArticle)
+    fun getAllFavoriteXmlArticles(): Flow<List<XmlArticle>> =
+        articleDao.getFavoriteXmlArticles()
+
+    fun getAllFavoriteJsonArticles(): Flow<List<JsonArticle>> =
+        articleDao.getFavoriteJsonArticles()
+
+    suspend fun insertJsonArticleList(articles: List<JsonArticle>) {
+        articleDao.insertJsonArticleList(articles)
     }
 
-    suspend fun insertNewFavoriteJsonArticle(jsonArticle: JsonArticle) {
-        articleDao.insertJsonArticle(jsonArticle)
+    suspend fun insertXmlArticleList(articles: List<XmlArticle>) {
+        articleDao.insertXmlArticlesList(articles)
     }
 
-    suspend fun deleteFavoriteXmlArticle(id: Int) {
-        articleDao.deleteXmlArticleById(id)
+    suspend fun setFavoriteStateXmlArticle(xmlArticle: XmlArticle): Long =
+        articleDao.insertOrUpdateXmlArticle(xmlArticle)
+
+    suspend fun setFavoriteStateJsonArticle(jsonArticle: JsonArticle): Long =
+        articleDao.insertOrUpdateJsonArticle(jsonArticle)
+
+    suspend fun clearXmlTableUntilFavorites() {
+        articleDao.clearXmlTableUntilFavorites()
     }
 
-    suspend fun deleteFavoriteJsonArticle(id: Int) {
-        articleDao.deleteJsonArticleById(id)
+    suspend fun clearJsonTableUntilFavorites() {
+        articleDao.clearJsonTableUntilFavorites()
     }
 }
