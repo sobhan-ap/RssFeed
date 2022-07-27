@@ -84,7 +84,7 @@ class ArticleListAdapter(
 
         override fun bind(item: Article) {
             binding.article = item as JsonArticle
-            binding.root.setOnClickListener {
+            binding.tvDescription.setOnClickListener {
                 onArticleItemClick(item)
             }
             binding.imgFavorite.setOnClickListener {
@@ -98,7 +98,7 @@ class ArticleListAdapter(
 
         override fun bind(item: Article) {
             binding.xmlArticle = item as XmlArticle
-            binding.root.setOnClickListener {
+            binding.tvDescription.setOnClickListener {
                 onArticleItemClick(item)
             }
             binding.imgFavorite.setOnClickListener {
