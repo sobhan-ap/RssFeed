@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.databinding.BindingAdapter
 import com.example.rssfeed.R
 import com.example.rssfeed.utils.loadImageWithGlideMediumRadius
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @BindingAdapter("setImageUrlMediumRadius")
 fun setImageUrlMediumRadius(imageView: AppCompatImageView, url: String?) {
@@ -41,4 +42,12 @@ fun setImageFavoriteState(imageView: AppCompatImageView, isFavorite: Boolean = f
         imageView.setImageResource(R.drawable.ic_favorite_alpha_75)
     else
         imageView.setImageResource(R.drawable.ic_unfavorite_alpha_75)
+}
+
+@BindingAdapter("setFabFavoriteState")
+fun setFabFavoriteState(fab: FloatingActionButton, isFavorite: Boolean) {
+    if (isFavorite)
+        fab.setImageResource(R.drawable.ic_favorite_alpha_75)
+    else
+        fab.setImageResource(R.drawable.ic_unfavorite_alpha_75)
 }
