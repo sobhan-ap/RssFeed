@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="article"
+            type="com.example.rssfeed.data.model.Article" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,12 +17,27 @@
 
         <WebView
             android:id="@+id/web_view"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_favorite"
+            setFabFavoriteState="@{article.favorite}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16"
+            android:backgroundTint="@color/orange"
+            app:fabSize="normal"
+            app:borderWidth="0dp"
+            app:elevation="3dp"
+            app:pressedTranslationZ="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
