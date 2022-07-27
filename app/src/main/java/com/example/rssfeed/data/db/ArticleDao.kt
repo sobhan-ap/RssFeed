@@ -12,21 +12,36 @@ import kotlinx.coroutines.flow.Flow
 interface ArticleDao {
 
     @Query("SELECT * FROM xml_article")
-    fun getXmlArticles(): Flow<List<XmlArticle>>
+    fun getXmlArticleList(): Flow<List<XmlArticle>>
 
     @Query("SELECT * FROM json_article")
-    fun getJsonArticles(): Flow<List<JsonArticle>>
+    fun getJsonArticleList(): Flow<List<JsonArticle>>
+
+    @Query("SELECT * FROM xml_article WHERE isFavorite = 1")
+    fun getFavoriteXmlArticles(): Flow<List<XmlArticle>>
+
+    @Query("SELECT * FROM json_article WHERE isFavorite = 1")
+    fun getFavoriteJsonArticles(): Flow<List<JsonArticle>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertXmlArticle(xmlArticle: XmlArticle)
+    suspend fun insertJsonArticleList(articles: List<JsonArticle>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertJsonArticle(jsonArticle: JsonArticle)
+    suspend fun insertXmlArticlesList(list: List<XmlArticle>)
 
-    @Query("DELETE FROM xml_article WHERE id = :articleId")
-    suspend fun deleteXmlArticleById(articleId: Int)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdateXmlArticle(xmlArticle: XmlArticle): Long
 
-    @Query("DELETE FROM json_article WHERE id = :articleId")
-    suspend fun deleteJsonArticleById(articleId: Int)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertOrUpdateJsonArticle(jsonArticle: JsonArticle): Long
+
+    @Query("DELETE FROM xml_article WHERE isFavorite = 0")
+    suspend fun clearXmlTableUntilFavorites()
+
+    @Query("DELETE FROM json_article WHERE isFavorite = 0")
+    suspend fun clearJsonTableUntilFavorites()
+
+//    @Query("DELETE FROM json_article WHERE id = :articleId")
+//    suspend fun deleteJsonArticleById(articleId: Int)
 
 }
