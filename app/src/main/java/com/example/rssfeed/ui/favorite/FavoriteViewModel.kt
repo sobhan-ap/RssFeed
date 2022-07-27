@@ -40,8 +40,8 @@ class FavoriteViewModel @Inject constructor(
     fun unfavoriteArticle(article: Article) {
         viewModelScope.launch(Dispatchers.IO) {
             when (article) {
-                is JsonArticle -> repository.deleteFavoriteJsonArticle(article.id)
-                is XmlArticle -> repository.deleteFavoriteXmlArticle(article.id)
+                is JsonArticle -> repository.setFavoriteStateJsonArticle(article)
+                is XmlArticle -> repository.setFavoriteStateXmlArticle(article)
             }
             getAllArticles()
         }
