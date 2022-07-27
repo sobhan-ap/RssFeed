@@ -11,6 +11,7 @@ import com.example.rssfeed.data.network.NetworkResult
 import com.example.rssfeed.databinding.FragmentXmlNewsBinding
 import com.example.rssfeed.ui.adapters.ArticleListAdapter
 import com.example.rssfeed.utils.BaseFragment
+import com.example.rssfeed.utils.GetData
 import com.example.rssfeed.utils.WEB_URL_ARG
 import com.example.rssfeed.utils.addVerticalDividerSpacing16
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,7 +51,7 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
 
     private fun initViews() {
         binding.refreshLayout.setOnRefreshListener {
-            _viewModel.getXmlNewsList()
+            _viewModel.getXmlNewsList(GetData.Local)
         }
         initRecyclerView()
     }
@@ -66,9 +67,13 @@ class XmlNewsFragment : BaseFragment<FragmentXmlNewsBinding>() {
             onFavoriteClick = { article ->
                 article as XmlArticle
                 if (article.isFavorite)
-                    _viewModel.unfavoriteFavorite(article.id)
+                    _viewModel.unfavoriteFavorite(article.apply {
+                        isFavorite = !isFavorite
+                    })
                 else
-                    _viewModel.setFavoriteArticle(article)
+                    _viewModel.setFavoriteArticle(article.apply {
+                        isFavorite = !isFavorite
+                    })
             })
         binding.rvNewsList.apply {
             addVerticalDividerSpacing16(requireContext())
