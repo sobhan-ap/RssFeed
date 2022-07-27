@@ -51,7 +51,9 @@ class FavoriteFragment : BaseFragment<FragmentFavoriteBinding>() {
                 findNavController().navigate(R.id.webViewFragment, bundle)
             },
             onFavoriteClick = { article ->
-                _viewModel.unfavoriteArticle(article)
+                _viewModel.unfavoriteArticle(article.apply {
+                    isFavorite = !isFavorite
+                })
             })
 
         binding.rvFavoriteList.apply {
